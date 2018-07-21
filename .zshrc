@@ -7,7 +7,6 @@ antigen use oh-my-zsh
 antigen bundle git
 antigen bundle sudo
 antigen bundle archlinux
-antigen bundle docker
 antigen bundle docker-compose
 antigen bundle colored-man-pages
 antigen bundle common-aliases

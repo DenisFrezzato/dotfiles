@@ -1,3 +1,5 @@
+# to install antigen:
+# mkdir -p .antigen && curl -L git.io/antigen > .antigen/antigen.zsh
 source $HOME/.antigen/antigen.zsh
 
 antigen use oh-my-zsh

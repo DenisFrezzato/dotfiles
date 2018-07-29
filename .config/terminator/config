@@ -1,0 +1,20 @@
+[global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+  focus = mouse
+  title_inactive_bg_color = "#002831"
+  title_inactive_fg_color = "#586e75"
+  title_receive_bg_color = "#002831"
+  title_receive_fg_color = "#eee8d5"
+  title_transmit_bg_color = "#002831"
+  title_transmit_fg_color = "#c0bebf"
+[keybindings]
+[layouts]
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#001e27"
+    cursor_color = "#708284"
+    font = Inconsolata-dz for Powerline Medium 12
+    foreground_color = "#708284"
+    palette = "#002831:#d11c24:#738a05:#a57706:#2176c7:#c61c6f:#259286:#eae3cb:#475b62:#bd3613:#475b62:#536870:#708284:#5956ba:#819090:#fcf4dc"
+    use_system_font = False

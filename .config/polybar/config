@@ -48,7 +48,7 @@ font-3 = Material Icons:size=12;2
 
 modules-left = i3 player-mpris-tail
 modules-center = 
-modules-right = xkeyboard battery wlan eth temperature cpu memory pulseaudio xbacklight date time
+modules-right = xkeyboard system-nvidia-bbswitch battery wlan eth temperature cpu system-cpu-loadavg memory pulseaudio xbacklight date time
 
 tray-position = right
 tray-padding = 2
@@ -188,11 +188,12 @@ label =  %time%
 [module/pulseaudio]
 type = internal/pulseaudio
 
-format-volume = <label-volume>
+format-volume = %{A3:pavucontrol &:}<label-volume>%{A}
 format-volume-prefix = " "
 label-volume = %percentage%%
 
-label-muted =  
+format-muted= %{A3:pavucontrol &:}<label-muted>%{A}
+label-muted = 
 label-muted-foreground = ${colours.alert}
 
 [module/battery]
@@ -242,11 +243,22 @@ label-warn = %temperature-c%
 [module/player-mpris-tail]
 ; https://github.com/x70b1/polybar-scripts/tree/master/polybar-scripts/player-mpris-tail
 type = custom/script
-exec = ~/bin/polybar-scripts/player-mpris-tail/player-mpris-tail.py
+exec = ~/.config/polybar/player-mpris-tail.py
 tail = true
-click-left = ~/bin/polybar-scripts/player-mpris-tail/player-ctrl.sh previous
-click-right = ~/bin/polybar-scripts/player-mpris-tail/player-ctrl.sh next
-click-middle = ~/bin/polybar-scripts/player-mpris-tail/player-ctrl.sh play-pause
+click-left = ~/.config/polybar/player-ctrl.sh previous
+click-right = ~/.config/polybar/player-ctrl.sh next
+click-middle = ~/.config/polybar/player-ctrl.sh play-pause
+
+[module/system-cpu-loadavg]
+type = custom/script
+exec = ~/.config/polybar/system-cpu-loadavg.sh
+interval = 5
+
+[module/system-nvidia-bbswitch]
+type = custom/script
+exec = ~/.config/polybar/system-nvidia-bbswitch.sh
+interval = 5
+click-left = "optirun -b none nvidia-settings -c :8"
 
 [settings]
 screenchange-reload = true

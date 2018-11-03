@@ -11,7 +11,6 @@ antigen bundle docker-compose
 antigen bundle colored-man-pages
 antigen bundle common-aliases
 antigen bundle dotenv
-antigen bundle node
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-autosuggestions

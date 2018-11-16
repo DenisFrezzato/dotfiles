@@ -157,7 +157,7 @@ interface = wlp3s0
 interval = 3
 
 format-connected-prefix = " "
-label-connected = %{A3:nmcli radio wifi off:}%essid% %downspeed%%{A}
+label-connected = %{A3:nmcli radio wifi off:}%essid:0:16% %downspeed%%{A}
 
 label-disconnected = %{A1:nmcli radio wifi on:}%{A}
 label-disconnected-foreground = ${colours.alert}

@@ -44,6 +44,7 @@ set expandtab
 set smarttab
 set shiftwidth=4
 set tabstop=4
+set scrolloff=8
 
 set background=light
 let g:one_allow_italics = 1

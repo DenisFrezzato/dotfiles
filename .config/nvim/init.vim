@@ -8,6 +8,7 @@ call minpac#add('editorconfig/editorconfig-vim')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('neoclide/coc.nvim')
+call minpac#add('terryma/vim-multiple-cursors')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-markdown')
@@ -71,6 +72,7 @@ nnoremap [e :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e :<c-u>execute 'move +'. v:count1<cr>
 
 nmap <leader>w :w<cr>
+nmap <leader>q :q<cr>
 map <silent> <leader><cr> :noh<cr>
 
 " Clipboard functionality (paste from system).

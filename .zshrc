@@ -23,10 +23,9 @@ bindkey '^[[B' history-substring-search-down
 
 alias rename="perl-rename"
 alias cal="cal -m"
-alias xclip="xclip -sel clipboard"
-alias vim="nvim"
 
-export EDITOR="vim" 
+export EDITOR="nvim"
+
 export FZF_DEFAULT_COMMAND='fd --type f'
 
 # Defer initialization of nvm until nvm, node or a node-dependent command is
@@ -46,3 +45,4 @@ if [ -s "$HOME/.nvm/nvm.sh" ] && [ ! "$(whence -w __init_nvm)" = function ]; the
   for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
 fi
 
+[ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"

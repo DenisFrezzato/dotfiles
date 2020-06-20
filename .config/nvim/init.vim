@@ -7,7 +7,7 @@ call minpac#add('airblade/vim-gitgutter')
 call minpac#add('editorconfig/editorconfig-vim')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
-call minpac#add('neoclide/coc.nvim')
+call minpac#add('neoclide/coc.nvim', { 'branch': 'release' })
 call minpac#add('terryma/vim-multiple-cursors')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-fugitive')
@@ -16,7 +16,7 @@ call minpac#add('tpope/vim-sensible')
 call minpac#add('tpope/vim-surround')
 call minpac#add('vim-airline/vim-airline')
 
-call minpac#add('rakr/vim-one')
+call minpac#add('rakr/vim-one') 
 
 call minpac#add('neovimhaskell/haskell-vim')
 
@@ -51,6 +51,7 @@ set background=light
 let g:one_allow_italics = 1
 let g:airline_theme = 'one'
 colorscheme one
+set colorcolumn=100
 
 set cmdheight=2
 
@@ -66,6 +67,7 @@ au TabLeave * let g:lasttab = tabpagenr()
 map <leader>ss :setlocal spell!<cr> 
 map <leader>fz :FZF<cr>
 map <leader>ag :Ag<cr>
+map <leader>hh :History<cr>
 
 " Quickly move current line.
 nnoremap [e :<c-u>execute 'move -1-'. v:count1<cr>
@@ -80,7 +82,6 @@ vnoremap <leader>y "+y
 nnoremap <leader>y "+y
 nnoremap <leader>p "+p
 vnoremap <leader>p "+p
-
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -116,6 +117,8 @@ endfunction
 
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
+" Show all actions.
+nmap <leader>ac :CocList actions<cr>
 " Show all diagnostics.
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
@@ -133,10 +136,11 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest Coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " Toggle CocExplorer
-:nmap <leader>e :CocCommand explorer<CR>
+nmap <leader>e :CocCommand explorer<CR>
 
 
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved' 
@@ -149,3 +153,18 @@ let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.maxlinenr = ''
 let g:airline_symbols.dirty='⚡' 
+
+
+let g:firenvim_config = { 
+    \ 'globalSettings': {
+        \ 'alt': 'all',
+    \  },
+    \ 'localSettings': {
+        \ '.*': {
+            \ 'cmdline': 'neovim',
+            \ 'priority': 0,
+            \ 'selector': 'textarea:not([readonly]), div[role="textbox"]',
+            \ 'takeover': 'never',
+        \ },
+    \ }
+\ }

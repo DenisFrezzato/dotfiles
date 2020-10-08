@@ -5,13 +5,14 @@ call minpac#init()
 call minpac#add('Shougo/vimproc.vim')
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('editorconfig/editorconfig-vim')
-call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
+call minpac#add('junegunn/fzf', { 'do': { -> fzf#install() } })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('neoclide/coc.nvim', { 'branch': 'release' })
 call minpac#add('terryma/vim-multiple-cursors')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-markdown')
+call minpac#add('tpope/vim-repeat') 
 call minpac#add('tpope/vim-sensible')
 call minpac#add('tpope/vim-surround')
 call minpac#add('vim-airline/vim-airline')
@@ -118,7 +119,7 @@ endfunction
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 " Show all actions.
-nmap <leader>ac :CocList actions<cr>
+nmap <leader>ac :CocAction<cr>
 " Show all diagnostics.
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.

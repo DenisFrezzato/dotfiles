@@ -2,12 +2,14 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+exec_always xmodmap ~/.Xmodmap
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id udiskie
 exec --no-startup-id dunst
 exec --no-startup-id numlockx on
 exec --no-startup-id compton -CGb
 exec --no-startup-id xflux -l 45 -g 9
+exec --no-startup-id ~/bin/20-20-20.sh
 
 set $mod Mod4
 
@@ -127,15 +129,15 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% 
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% 
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle 
-
-# Toggle monitors
-bindsym $mod+p exec --no-startup-id ~/bin/iterate-monitor
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% 
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% 
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle 
 
 # Lock screen
-bindsym $mod+l exec --no-startup-id dm-tool lock
+bindsym $mod+l exec dm-tool lock
+
+# Rotate display.
+bindsym $mod+p exec ~/bin/pick-display.sh; restart
 
 # screenshot
 # whole screen

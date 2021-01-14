@@ -12,15 +12,15 @@
     "javascript",
     "typescript",
     "typescriptreact",
-    "json",
     "javascriptreact"
   ],
   "typescript.suggestionActions.enabled": false,
-
   "languageserver": {
     "haskell": {
-      "command": "ghcide",
-      "args": ["--lsp"],
+      "command": "haskell-language-server-wrapper",
+      "args": [
+        "--lsp"
+      ],
       "rootPatterns": [
         ".stack.yaml",
         ".hie-bios",
@@ -28,11 +28,34 @@
         "cabal.config",
         "package.yaml"
       ],
-      "filetypes": ["hs", "lhs", "haskell"]
+      "filetypes": [
+        "hs",
+        "lhs",
+        "haskell"
+      ]
+    },
+    "purescript": {
+      "command": "purescript-language-server",
+      "args": [
+        "--stdio"
+      ],
+      "filetypes": [
+        "purescript"
+      ],
+      "trace.server": "off",
+      "rootPatterns": [
+        "bower.json",
+        "psc-package.json",
+        "spago.dhall"
+      ],
+      "settings": {
+        "purescript": {
+          "addSpagoSources": true
+        }
+      }
     }
   },
   "coc.preferences.extensionUpdateCheck": "daily",
-
   "prettier.printWidth": 100,
   "prettier.singleQuote": true,
   "prettier.trailingComma": "all",

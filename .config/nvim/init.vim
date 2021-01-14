@@ -16,15 +16,21 @@ call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-sensible')
 call minpac#add('tpope/vim-surround')
 call minpac#add('vim-airline/vim-airline')
+call minpac#add('sbdchd/neoformat')
 
 call minpac#add('rakr/vim-one') 
 
 call minpac#add('neovimhaskell/haskell-vim')
 
 call minpac#add('pangloss/vim-javascript')
+call minpac#add('https://github.com/zacacollier/vim-javascript-sql', { 'branch': 'add-typescript-support', 'for': ['javascript', 'typescript'] }) 
 call minpac#add('leafgarland/typescript-vim')
 call minpac#add('MaxMEllon/vim-jsx-pretty')
 call minpac#add('peitalin/vim-jsx-typescript')
+
+call minpac#add('ElmCast/elm-vim')
+
+call minpac#add('purescript-contrib/purescript-vim')
 
 call minpac#add('glacambre/firenvim', { 'type': 'opt', 'do': 'packadd firenvim | call firenvim#install(0)'})
 if exists('g:started_by_firenvim')
@@ -56,8 +62,9 @@ set colorcolumn=100
 
 set cmdheight=2
 
-let mapleader = ";"
-let g:mapleader = ";"
+nnoremap <Space> <Nop>
+let mapleader = " "
+let g:mapleader = " "
 
 
 " Let 'tl' toggle between this and the last accessed tab.
@@ -70,9 +77,14 @@ map <leader>fz :FZF<cr>
 map <leader>ag :Ag<cr>
 map <leader>hh :History<cr>
 
-" Quickly move current line.
-nnoremap [e :<c-u>execute 'move -1-'. v:count1<cr>
-nnoremap ]e :<c-u>execute 'move +'. v:count1<cr>
+" Quickly move current line up or down.
+" Stolen from https://vimtricks.com/p/vimtrick-moving-lines/.
+nnoremap <c-j> :m .+1<CR>==
+nnoremap <c-k> :m .-2<CR>==
+inoremap <c-j> <Esc>:m .+1<CR>==gi
+inoremap <c-k> <Esc>:m .-2<CR>==gi
+vnoremap <c-j> :m '>+1<CR>gv=gv
+vnoremap <c-k> :m '<-2<CR>gv=gv
 
 nmap <leader>w :w<cr>
 nmap <leader>q :q<cr>
@@ -121,21 +133,21 @@ nmap <leader>rn <Plug>(coc-rename)
 " Show all actions.
 nmap <leader>ac :CocAction<cr>
 " Show all diagnostics.
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <leader>e  :<C-u>CocList extensions<cr>
 " Show commands.
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <leader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <leader>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> <leader>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <leader>k  :<C-u>CocPrev<CR>
 " Resume latest Coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+" nnoremap <silent> <leader>p  :<C-u>CocListResume<CR>
 " Toggle CocExplorer
 nmap <leader>e :CocCommand explorer<CR>
 
@@ -169,3 +181,15 @@ let g:firenvim_config = {
         \ },
     \ }
 \ }
+
+
+let g:ormolu_ghc_opt = ["-XTypeApplications", "-XRankNTypes"]
+let g:neoformat_enabled_haskell = ['ormolu']
+let g:neoformat_enabled_javascript = []
+let g:neoformat_enabled_typescript = []
+let g:neoformat_enabled_typescriptreact = []
+
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END

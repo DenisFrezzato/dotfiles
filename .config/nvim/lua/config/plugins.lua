@@ -102,6 +102,10 @@ end)
 
 lsp.setup()
 
+vim.diagnostic.config({
+	float = { focusable = true },
+})
+
 require("nvim-tree").setup()
 local treeapi = require("nvim-tree.api")
 bind("n", "<leader>e", function()

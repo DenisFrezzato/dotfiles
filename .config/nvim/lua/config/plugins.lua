@@ -14,6 +14,8 @@ require("packer").startup(function(use)
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 	})
 
+	use("hrsh7th/nvim-cmp")
+
 	use({
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v1.x",
@@ -52,6 +54,13 @@ require("packer").startup(function(use)
 	use("tpope/vim-surround")
 	use("airblade/vim-gitgutter")
 	use("tpope/vim-fugitive")
+	use({
+		"akinsho/git-conflict.nvim",
+		tag = "*",
+		config = function()
+			require("git-conflict").setup()
+		end,
+	})
 	use("karb94/neoscroll.nvim")
 	use("nvim-tree/nvim-tree.lua")
 
@@ -68,6 +77,17 @@ require("packer").startup(function(use)
 	})
 
 	use("mhartington/formatter.nvim")
+
+	use({
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup({
+				suggestion = { auto_trigger = true },
+			})
+		end,
+	})
 end)
 
 require("nvim-treesitter.configs").setup({
@@ -92,6 +112,7 @@ bind("n", "<leader>fh", builtin.help_tags)
 bind("n", "<leader>fm", builtin.marks)
 bind("n", "<leader>fq", builtin.quickfix)
 bind("n", "<leader>fo", builtin.treesitter)
+bind("n", "<leader>fr", builtin.lsp_references)
 
 local lsp = require("lsp-zero")
 lsp.preset("recommended")
@@ -104,6 +125,16 @@ lsp.setup()
 
 vim.diagnostic.config({
 	float = { focusable = true },
+})
+
+local cmp = require("cmp")
+cmp.setup({
+	sources = {
+		{ name = "nvim_lsp", group_index = 1 },
+		{ name = "buffer", group_index = 2 },
+		{ name = "path", group_index = 3 },
+		{ name = "luasnip", group_index = 4 },
+	},
 })
 
 require("nvim-tree").setup()
@@ -142,13 +173,13 @@ require("mason-null-ls").setup({
 local null_ls = require("null-ls")
 null_ls.setup({
 	sources = {
-		null_ls.builtins.completion.spell,
-		null_ls.builtins.code_actions.cspell,
+		null_ls.builtins.diagnostics.tsc,
+		null_ls.builtins.diagnostics.actionlint,
 		null_ls.builtins.diagnostics.eslint_d,
 		null_ls.builtins.code_actions.eslint_d,
 		null_ls.builtins.code_actions.gitrebase,
-		null_ls.builtins.diagnostics.tsc,
-		null_ls.builtins.diagnostics.actionlint,
+		null_ls.builtins.completion.spell,
+		null_ls.builtins.code_actions.cspell,
 	},
 })
 

@@ -1,5 +1,5 @@
 [global]
-    font = Monospace 12
+    font = "Open Sans" 12
     
     # Allow a small subset of html markup:
     #   <b>bold</b>
@@ -44,31 +44,30 @@
     # Set to -1 to disable.
     show_age_threshold = 60
     
-    # Split notifications into multiple lines if they don't fit into
-    # geometry.
-    word_wrap = yes
-    
     # Ignore newlines '\n' in notifications.
     ignore_newline = no
     
-    
-    # The geometry of the window:
-    #   [{width}]x{height}[+/-{x}+/-{y}]
-    # The geometry of the message window.
-    # The height is measured in number of notifications everything else
-    # in pixels.  If the width is omitted but the height is given
-    # ("-geometry x2"), the message window expands over the whole screen
-    # (dmenu-like).  If width is 0, the window expands to the longest
-    # message displayed.  A positive x is measured from the left, a
-    # negative from the right side of the screen.  Y is measured from
-    # the top and down respectevly.
-    # The width can be negative.  In this case the actual width is the
-    # screen width minus the width defined in within the geometry option.
-    geometry = "300x5-30+20"
-    
-    # Shrink window if it's smaller than the width.  Will be ignored if
-    # width is 0.
-    shrink = no
+    ### Geometry ###
+
+    # dynamic width from 0 to 300
+    # width = (0, 300)
+    # constant width of 300
+    width = 400
+
+    # The maximum height of a single notification, excluding the frame.
+    height = 400
+
+    # Position the notification in the top right corner
+    origin = top-right
+
+    # Offset from the origin
+    offset = 27x54
+
+    # Scale factor. It is auto-detected if value is 0.
+    scale = 0
+
+    # Maximum number of notification (0 means no limit)
+    notification_limit = 0
     
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing windowmanager is
@@ -94,7 +93,7 @@
     # 
     # If this option is set to mouse or keyboard, the monitor option
     # will be ignored.
-    follow = mouse
+    follow = keyboard
     
     # Should a notification popped up from history be sticky or timeout
     # as if it would normally do.
@@ -117,10 +116,10 @@
     separator_height = 2
     
     # Padding between text and separator.
-    padding = 10
+    padding = 12
     
     # Horizontal padding.
-    horizontal_padding = 8
+    horizontal_padding = 12
     
     # Define a color for the separator.
     # possible values are:
@@ -128,18 +127,13 @@
     #  * foreground: use the same color as the foreground;
     #  * frame: use the same color as the frame;
     #  * anything else will be interpreted as a X color.
-    separator_color = frame
-    
-    # Print a notification on startup.
-    # This is mainly for error detection, since dbus (re-)starts dunst
-    # automatically after a crash.
-    startup_notification = true
+    separator_color = "#F0F1F2"
     
     # dmenu path.
     dmenu = /usr/bin/dmenu -p dunst:
     
     # Browser for opening urls in context menu.
-    browser = /usr/bin/chromium
+    browser = /usr/bin/firefox
 
     # Align icons left/right/off
     icon_position = off
@@ -147,45 +141,24 @@
     # Paths to default icons.
     icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
 
-    frame_width = 1
-    frame_color = "#eee8d5"
-
-[shortcuts]
-
-    # Shortcuts are specified as [modifier+][modifier+]...key
-    # Available modifiers are "ctrl", "mod1" (the alt-key), "mod2",
-    # "mod3" and "mod4" (windows-key).
-    # Xev might be helpful to find names for keys.
-    
-    # Close notification.
-    close = ctrl+space
-    
-    # Close all notifications.
-    close_all = ctrl+shift+space
-    
-    # Redisplay last message(s).
-    # On the US keyboard layout "grave" is normally above TAB and left
-    # of "1".
-    history = ctrl+grave
-    
-    # Context menu.
-    context = ctrl+shift+period
+    frame_width = 3
+    frame_color = "#F0F1F2"
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#002b36"
-    foreground = "#839496"
+    background = "#FAFAFA"
+    foreground = "#6C7680"
     timeout = 10
 
 [urgency_normal]
-    background = "#002b36"
-    foreground = "#839496"
+    background = "#FAFAFA"
+    foreground = "#6C7680"
     timeout = 10
 
 [urgency_critical]
-    background = "#002b36"
-    foreground = "#dc322f"
+    background = "#FAFAFA"
+    foreground = "#F51818"
     timeout = 0
 
 

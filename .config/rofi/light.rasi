@@ -1,133 +1,109 @@
+configuration {
+    display-run: " ";
+    display-drun: "  ";
+    display-window: "  ";
+    font: "JetBrains Mono 12";
+    show-icons: true;
+}
+
 * {
-    neutral1: rgba( 239, 239, 239, 100 % );
-    neutral2: rgba( 209, 213, 216, 100 % );
-    primary-light: rgba( 71, 85, 119, 100 % );
-    primary-dark: rgba( 40, 50, 78, 100 % );
-    alert: rgba( 221, 66, 48, 100% );
-    background: @neutral1;
-    background-alt: @neutral2;
-    normal-background:           @neutral1;
-    normal-foreground:           @primary-dark;
-    selected-normal-background:  @primary-light;
-    selected-normal-foreground:  @neutral1;
-    alternate-normal-background: @neutral2;
-    alternate-normal-foreground: @primary-dark;
-    urgent-background:           @alert;
-    urgent-foreground:           @neutral1;
-    alternate-urgent-background: @alert;
-    alternate-urgent-foreground: @neutral1;
-    selected-urgent-background:  @primary-light;
-    selected-urgent-foreground:  @alert;
-    active-background:           @primary-light;
-    active-foreground:           @neutral1;
-    alternate-active-background: @primary-dark;
-    alternate-active-foreground: @neutral1;
-    selected-active-background:  @neutral1;
-    selected-active-foreground:  @primary-dark;
-    spacing:                     2;
-    separatorcolor:              @background-alt; 
+    accent: #FF9940;
+    background: #FAFAFA;
+    foreground: #6C7680;
+    ui: #959DA6;
+
+    error: #F51818;
+
+    line: #F0F1F2;
+    selection-bg: #E5EBF2;
+
+    normal-background:           @background;
+    normal-foreground:           @foreground;
+    selected-normal-background:  @selection-bg;
+    selected-normal-foreground:  @foreground;
+    urgent-background:           @error;
+    urgent-foreground:           @foreground;
+    selected-urgent-background:  @selection-bg;
+    selected-urgent-foreground:  @error;
+    active-background:           @accent;
+    active-foreground:           @foreground;
+    selected-active-background:  @selection-bg;
+    selected-active-foreground:  @foreground;
     background-color:            @background;
-    border-color:                @background-alt;
+    border-color:                @background;
 }
-#window {
+
+window {
     background-color: @background;
-    border:           1;
-    padding:          5;
 }
-#mainbox {
+
+element {
     border:  0;
-    padding: 0;
-}
-#message {
-    border:       1px dash 0px 0px ;
-    border-color: @separatorcolor;
-    padding:      1px ;
-}
-#textbox {
-    text-color: @foreground;
-}
-#listview {
-    fixed-height: 0;
-    border:       2px dash 0px 0px ;
-    border-color: @separatorcolor;
-    spacing:      2px ;
-    scrollbar:    true;
-    padding:      2px 0px 0px ;
-}
-#element {
-    border:  0;
-    padding: 1px ;
-}
-#element.normal.normal {
-    background-color: @normal-background;
+    padding: 8;
     text-color:       @normal-foreground;
+    background-color: @normal-background;
 }
-#element.normal.urgent {
+
+element.normal.urgent {
     background-color: @urgent-background;
     text-color:       @urgent-foreground;
 }
-#element.normal.active {
+
+element.normal.active {
     background-color: @active-background;
     text-color:       @active-foreground;
 }
-#element.selected.normal {
+
+element.selected.normal {
     background-color: @selected-normal-background;
     text-color:       @selected-normal-foreground;
 }
-#element.selected.urgent {
+
+element.selected.urgent {
     background-color: @selected-urgent-background;
     text-color:       @selected-urgent-foreground;
 }
-#element.selected.active {
+
+element.selected.active {
     background-color: @selected-active-background;
     text-color:       @selected-active-foreground;
 }
-#element.alternate.normal {
-    background-color: @alternate-normal-background;
-    text-color:       @alternate-normal-foreground;
+
+element-text {
+    padding: 2;
+    background-color: inherit;
+    text-color: inherit;
 }
-#element.alternate.urgent {
-    background-color: @alternate-urgent-background;
-    text-color:       @alternate-urgent-foreground;
+
+element-icon {
+    size: 24;
 }
-#element.alternate.active {
-    background-color: @alternate-active-background;
-    text-color:       @alternate-active-foreground;
+
+
+listview {
+    columns: 1;
+    lines: 6;
 }
-#scrollbar {
-    width:        4px ;
-    border:       0;
-    handle-color: @normal-foreground;
-    handle-width: 8px ;
-    padding:      0;
+
+inputbar {
+    children: [prompt, entry];
 }
-#sidebar {
-    border:       2px dash 0px 0px ;
-    border-color: @separatorcolor;
-}
-#button {
-    spacing:    0;
+
+entry {
+    padding: 8;
     text-color: @normal-foreground;
 }
-#button.selected {
-    background-color: @selected-normal-background;
-    text-color:       @selected-normal-foreground;
+
+mainbox {
+    children: [inputbar, listview];
 }
-#inputbar {
-    spacing:    0;
-    text-color: @normal-foreground;
-    padding:    1px ;
-}
-#case-indicator {
-    spacing:    0;
-    text-color: @normal-foreground;
-}
-#entry {
-    spacing:    0;
-    text-color: @normal-foreground;
-}
-#prompt {
-    spacing:    0;
+
+prompt {
+    enabled: true;
+    padding: 8 0 0 8;
+    font: "Font Awesome 5 Free Regular 12";
+    font: "Inconsolata-g";
+    font: "JetBrains Mono 12";
     text-color: @normal-foreground;
 }
 

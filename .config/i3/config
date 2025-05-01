@@ -7,8 +7,10 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id udiskie
 exec --no-startup-id dunst
 exec --no-startup-id numlockx on
+exec --no-startup-id light-locker --lock-on-suspend --lock-on-lid
+exec --no-startup-id xautolock -time 5 -locker "light-locker-command -l"
 # exec --no-startup-id compton -CGb
-exec --no-startup-id xflux -l 45 -g 9
+exec --no-startup-id xinput set-button-map "SynPS/2 Synaptics TouchPad" 1 2 3 5 4 6 7
 exec ~/bin/20-20-20.sh
 
 set $mod Mod4
@@ -29,7 +31,7 @@ bindsym $mod+Return exec kitty
 # kill focused window
 bindsym $mod+Shift+q kill
 
-bindsym $mod+d exec "rofi -combi-modi drun,window -show combi -modi combi"
+bindsym $mod+d exec "rofi -combi-modi drun,run -show combi -modi combi"
 
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
@@ -86,7 +88,6 @@ bindsym $mod+4 workspace 9
 bindsym $mod+6 workspace 10
 
 bindsym $mod+Mod1+Right workspace next
-
 bindsym $mod+Mod1+Left workspace prev
 
 # move focused container to workspace
@@ -100,6 +101,11 @@ bindsym $mod+Shift+0 move container to workspace 7
 bindsym $mod+Shift+2 move container to workspace 8
 bindsym $mod+Shift+4 move container to workspace 9
 bindsym $mod+Shift+6 move container to workspace 10
+
+
+# Move workspace to different screen
+bindsym $mod+Mod1+Shift+Right move workspace to output right
+bindsym $mod+Mod1+Shift+Left move workspace to output left
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -133,6 +139,9 @@ bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% 
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle 
 
+bindsym $mod+b exec xbacklight -dec 8 
+bindsym $mod+Shift+b exec xbacklight -inc 8 
+
 # Lock screen
 bindsym $mod+l exec dm-tool lock
 
@@ -141,9 +150,16 @@ bindsym $mod+p exec ~/bin/pick-display.sh; restart
 
 # screenshot
 # whole screen
-bindsym $mod+Shift+Print exec scrot -e 'mv $f /dev/shm'
+# bindsym $mod+Shift+Print exec scrot -e 'mv $f /dev/shm'
 # rectangle selection
 bindsym --release $mod+Print exec scrot -s -e 'mv $f /dev/shm'
+# focused window
+bindsym --release $mod+Shift+Print exec scrot -u -e 'mv $f /dev/shm'
+
+# dunst
+bindsym Ctrl+space exec dunstctl close
+bindsym Ctrl+Shift+space exec dunstctl close-all
+bindsym Ctrl+Shift+` exec dunstctl action
 
 # Ayu theme
 set $accent #FF9940

@@ -1,0 +1,75 @@
+/**
+ * Ayu style for Waybar
+ */
+
+* {
+  font-weight: 400;
+  font-family: 'Inconsolata-g', 'Font Awesome 6 Free', sans-serif;
+  font-size: 14px;
+}
+
+#waybar {
+  background: #FAFAFA;
+  color: #6c7680;
+}
+
+#workspaces button {
+  background: transparent;
+  border: none;
+  padding: 0 8px;
+}
+
+#workspaces button.focused {
+  background: #E5EBF2;
+  color: #FF9940;
+}
+
+#workspaces button.urgent {
+  background: #FF9940;
+  color: #E5EBF2;
+}
+
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#custom-media,
+#tray,
+#idle_inhibitor,
+#custom-browser,
+#custom-terminal,
+#custom-files,
+#custom-editor,
+#custom-keyboard,
+#custom-disks,
+#custom-wttr,
+#custom-darksky,
+#custom-system,
+#custom-separator,
+#mode {
+  padding: 0 12px;
+}
+
+#idle_inhibitor {
+  padding: 0 18px;
+}
+
+#tray {
+  padding: 8px;
+}
+
+#custom-system {
+  margin-right: 6px;
+}
+
+#battery.states.warning {
+  color: #FA8D3E;
+}
+
+#battery.states.critical {
+  color: #F51818;
+}

@@ -33,6 +33,8 @@ yay -S \
   power-profiles-daemon \
   powertop \
   ranger \
+  reflector \
+  rsync \
   slurp \
   sway \
   swayidle \
@@ -55,5 +57,6 @@ sudo systemctl enable emptty.service
 sudo systemctl enable power-profiles-daemon.service
 systemctl enable --user pipewire.socket
 systemctl enable --user xdg-desktop-portal
+sudo reflector --latest 15 --sort rate --save /etc/pacman.d/mirrorlist
 
 cp -r .config .xkb symbols .zshrc ~/

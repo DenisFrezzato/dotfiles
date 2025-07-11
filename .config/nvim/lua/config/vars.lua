@@ -20,4 +20,4 @@ opt.softtabstop = 2
 opt.expandtab = true
 
 opt.termguicolors = true
-opt.colorcolumn = "100"
+opt.colorcolumn = "80"

@@ -1,75 +1,79 @@
-/**
- * Ayu style for Waybar
- */
-
 * {
   font-weight: 400;
-  font-family: 'Inconsolata-g', 'Font Awesome 6 Free', sans-serif;
+  font-family: 'Inter 18pt tnum', 'Font Awesome 6 Free', sans-serif;
   font-size: 14px;
 }
 
-#waybar {
+window#waybar {
   background: #FAFAFA;
-  color: #6c7680;
+  border: 0;
+  color: #6C7680;
+}
+
+button,
+button:hover {
+  border: 0;
+  box-shadow: none;
 }
 
 #workspaces button {
-  background: transparent;
-  border: none;
-  padding: 0 8px;
+  border-radius: 0;
+  padding: 0 4;
+  border-bottom: 2px solid transparent;
 }
 
 #workspaces button.focused {
   background: #E5EBF2;
   color: #FF9940;
+  border-color: currentColor;
 }
 
 #workspaces button.urgent {
   background: #FF9940;
   color: #E5EBF2;
+  border-color: currentColor;
 }
 
+#cava,
+#mpris,
 #battery,
+#power-profiles-daemon,
 #cpu,
 #memory,
-#disk,
 #temperature,
 #backlight,
 #network,
 #pulseaudio,
 #custom-media,
+#clock,
 #tray,
 #idle_inhibitor,
-#custom-browser,
-#custom-terminal,
-#custom-files,
-#custom-editor,
-#custom-keyboard,
-#custom-disks,
-#custom-wttr,
-#custom-darksky,
-#custom-system,
-#custom-separator,
+#custom-reboot,
+#custom-power,
 #mode {
-  padding: 0 12px;
+  padding: 0 8;
 }
 
 #idle_inhibitor {
-  padding: 0 18px;
+  padding: 0 18;
 }
 
-#tray {
-  padding: 8px;
-}
-
-#custom-system {
-  margin-right: 6px;
-}
-
-#battery.states.warning {
+.warning {
   color: #FA8D3E;
 }
 
-#battery.states.critical {
+.critical {
   color: #F51818;
+}
+
+#custom-reboot:hover {
+  color: #FF9940;
+}
+
+#custom-power:hover {
+  color: #F51818;
+}
+
+tooltip {
+  font-family: 'JetBrains Mono', 'Font Awesome 6 Free', sans-serif;
 }

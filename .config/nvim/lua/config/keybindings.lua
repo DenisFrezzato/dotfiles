@@ -22,4 +22,8 @@ bind("v", "<leader>64d", "y:let @\"=system('base64 -w 0 --decode', @\")<cr>gvP",
 bind("n", "[d", vim.diagnostic.goto_prev, opts)
 bind("n", "]d", vim.diagnostic.goto_next, opts)
 bind("n", "<leader>k", vim.lsp.buf.signature_help, opts)
-bind("n", "<leader>dl", vim.diagnostic.setloclist, opts)
+
+bind("n", "gK", function()
+	local new_config = not vim.diagnostic.config().virtual_lines
+	vim.diagnostic.config({ virtual_lines = new_config })
+end, { desc = "Toggle diagnostic virtual_lines" })

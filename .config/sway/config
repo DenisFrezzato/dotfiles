@@ -5,49 +5,28 @@ input type:keyboard {
     xkb_options ctrl:nocaps,caps:escape,compose:ralt,numpad:shift3,kpdl:semi,keypad:atm
 }
 
+input type:touchpad {
+    natural_scroll true
+    dwt true
+}
+
 exec --no-startup-id udiskie
 exec --no-startup-id dunst
 exec ~/bin/20-20-20.sh
 
 ### Variables
-#
-# Logo key. Use Mod1 for Alt.
 set $mod Mod4
-# Home row direction keys, like vim
-set $left h
-set $down j
-set $up k
-set $right l
-# Your preferred terminal emulator
 set $term kitty
 
 ### Output configuration
-#
-# Example configuration:
-#
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
-#
-# You can get the names of your outputs by running: swaymsg -t get_outputs
+output eDP-1 position 1920 0
 
 ### Idle configuration
 exec swayidle -w \
-    timeout 300 'swaylock -f -c 000000' \
-    timeout 300  'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-    before-sleep 'swaylock -f -c 000000'
-
-### Input configuration
-#
-# Example configuration:
-#
-#   input "2:14:SynPS/2_Synaptics_TouchPad" {
-#       dwt enabled
-#       tap enabled
-#       natural_scroll enabled
-#       middle_emulation enabled
-#   }
-#
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
+    timeout 300 'swaylock -f' \
+    timeout 300  'swaymsg "output * power off"' \
+    resume 'swaymsg "output * power on"' \
+    before-sleep 'swaylock -f'
 
 ### Key bindings
 #
@@ -60,7 +39,7 @@ bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
 
 # Start your launcher
-bindsym $mod+d exec wofi --show run
+bindsym $mod+d exec "rofi -combi-modi drun,run -show combi -modi combi"
 
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
@@ -72,28 +51,16 @@ floating_modifier $mod normal
 # Reload the configuration file
 bindsym $mod+Shift+c reload
 
-# Exit sway (logs you out of your Wayland session)
-bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
 # Move your focus around
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
-# Or use $mod+[up|down|left|right]
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # Move the focused window with the same, but add Shift
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
-# Ditto, with arrow keys
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
@@ -177,12 +144,6 @@ mode "resize" {
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
-
-    # Ditto, with arrow keys
     bindsym Left resize shrink width 10px
     bindsym Down resize grow height 10px
     bindsym Up resize shrink height 10px
@@ -204,40 +165,68 @@ bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ t
 # Special keys to adjust brightness via brightnessctl
 bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
-# Special key to take a screenshot with grim
-bindsym Print exec grim
 
 #
-# Status Bar:
+# Screenshots
 #
-# Read `man 5 sway-bar` for more information about this section.
-# bar {
-#     position top
+# Screenshot of the focused output
+bindsym $mod+Print exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+# Screenshot of the focused window
+bindsym $mod+Ctrl+Print exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')"
+# Screenshot of a region
+bindsym $mod+Shift+Print exec grim -g "$(slurp)"
+
+# Lock screen
+bindsym $mod+l exec swaylock -f
+
 #
-#     # When the status_command prints a new line to stdout, swaybar updates.
-#     # The default just shows the current date and time.
-#     status_command while ~/.config/sway/bar.sh; do sleep 1; done
+# Exit mode
 #
-#     font JetBrains Mono 10
+set $exit "exit: [s]leep, [p]oweroff, [r]eboot, [l]ogout"
+mode $exit {
+    bindsym --to-code {
+        s exec systemctl suspend, mode "default"
+        p exec systemctl poweroff
+        r exec systemctl reboot
+        l exec swaymsg exit
+
+        Escape mode "default"
+        $mod+x mode "default"
+    }
+}
+bindsym --to-code $mod+x mode $exit
+
 #
-#     colors {
-#         statusline #6C7680
-#         background #FAFAFA
-#         inactive_workspace #32323200 #32323200 #5c5c5c
-#     }
-# }
+# Wifi
+#
+set $wifi "wifi: [o]n, o[f]f"
+mode $wifi {
+    bindsym --to-code {
+        o exec nmcli radio wifi on, mode "default"
+        f exec nmcli radio wifi off, mode "default"
+
+        Escape mode "default"
+        $mod+w mode "default"
+    }
+}
+bindsym --to-code $mod+Ctrl+w mode $wifi
+
+#
+# Status Bar
+#
 bar swaybar_command waybar
 
 hide_edge_borders both
-mouse_warping none
 workspace_auto_back_and_forth yes
+mouse_warping none
 
 # dunst
 bindsym Ctrl+space exec dunstctl close
 bindsym Ctrl+Shift+space exec dunstctl close-all
-# bindsym Ctrl+Shift+` exec dunstctl action
 
 bindsym XF86Favorites exec swaymsg output eDP-1 power toggle
+
+font pango:Inter 1
 
 # Ayu theme
 set $accent #FF9940

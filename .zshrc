@@ -29,8 +29,8 @@ alias clamdscan="clamdscan --fdpass"
 
 alias tpq="telepresence quit -s"
 alias tpc="telepresence connect"
-alias tpctest="tpc --also-proxy 10.1.0.37/16"
-alias tpcprod="tpc --also-proxy 10.127.255.3/20"
+alias tpctest="tpc --also-proxy 10.1.0.0/24,10.6.0.0/24"
+alias tpcprod="tpc --also-proxy 10.127.224.0/19"
 
 export ANDROID_HOME="$HOME/Android/Sdk"
 # Output of `stack path --compiler-tools-bin`, hardcoded for performance.
@@ -48,10 +48,3 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=true
 # fnm
 export PATH="$HOME/.fnm:$PATH"
 eval "`fnm env --use-on-cd`"
-
-safenote() {
-    LINK=$(curl -s -X POST https://safenote.co/api/note \
-        -H "Content-Type: application/json" \
-        -d "{\"note\": \"$1\",\"lifetime\": \"24\",\"read_count\": \"1\"}" | jq -r .link)
-    echo $LINK
-}

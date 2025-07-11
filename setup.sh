@@ -51,4 +51,9 @@ yay -S \
   xdg-desktop-portal-wlr \
   zsh
 
+sudo systemctl enable emptty.service
+sudo systemctl enable power-profiles-daemon.service
+systemctl enable --user pipewire.socket
+systemctl enable --user xdg-desktop-portal
+
 cp -r .config .xkb symbols .zshrc ~/

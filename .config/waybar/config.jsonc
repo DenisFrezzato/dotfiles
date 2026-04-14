@@ -9,6 +9,7 @@
   ],
   "modules-center": [],
   "modules-right": [
+    "custom/recorder",
     "mpd",
     "idle_inhibitor",
     "pulseaudio",
@@ -35,26 +36,6 @@
     ],
     "tooltip": true,
     "tooltip-format": "{app}: {title}"
-  },
-  "cava": {
-    "cava_config": "/home/denis/.config/cava/config",
-    "framerate": 30,
-    "autosens": 1,
-    "bars": 14,
-    "lower_cutoff_freq": 50,
-    "higher_cutoff_freq": 10000,
-    "stereo": true,
-    "bar_delimiter": 0,
-    "format-icons": [
-      "▁",
-      "▂",
-      "▃",
-      "▄",
-      "▅",
-      "▆",
-      "▇",
-      "█"
-    ]
   },
   "mpris": {
     "format": "{status_icon} {dynamic}",
@@ -85,7 +66,7 @@
   },
   "clock": {
     "tooltip-format": "{calendar}",
-    "format": " {:%a %b %d  %T}",
+    "format": "  {:%a %b %d   %T}",
     "calendar": {
       "mode-mon-col": 3,
       "format": {
@@ -100,7 +81,7 @@
     "interval": 1
   },
   "cpu": {
-    "format": " {usage}%",
+    "format": "  {usage}%",
     "tooltip": false,
     "interval": 2
   },
@@ -119,7 +100,7 @@
     "interval": 5
   },
   "backlight": {
-    "format": "{icon} {percent}%",
+    "format": "{icon}  {percent}%",
     "format-icons": [
       "",
       "",
@@ -134,8 +115,8 @@
   },
   "battery": {
     "states": {
-      "warning": 30,
-      "critical": 15
+      "warning": 20,
+      "critical": 10
     },
     "format": "{icon} {capacity}% {time}",
     "format-time": "{H}:{m}",
@@ -144,31 +125,31 @@
     "format-plugged": " {capacity}%",
     "format-alt": "{icon} {time}",
     "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      ""
+      " ",
+      " ",
+      " ",
+      " ",
+      " "
     ]
   },
   "network#wifi": {
-    "interface": "wlp3s0",
-    "format-wifi": " {essid} ({signalStrength}%) {bandwidthTotalBits}",
+    "interface": "wlp0s20f3",
+    "format-wifi": "   {essid} ({signalStrength}%) {bandwidthTotalBits}",
     "format-disconnected": "󰖪",
     "on-click": "nmcli radio wifi on",
     "on-click-right": "nmcli radio wifi off",
     "interval": 2
   },
   "network#eth": {
-    "interface": "enp4s0f1",
+    "interface": "enp0s13f0u2u2",
     "format-ethernet": " {bandwidthTotalBits}",
     "tooltip-format": " {ifname} via {gwaddr}",
     "format-linked": " {ifname} (No IP)",
-    "format-disconnected": "/",
+    "format-disconnected": "󰌲 ",
     "interval": 2
   },
   "pulseaudio": {
-    "format": "{icon} {volume}%",
+    "format": "{icon}   {volume}%",
     "format-muted": " ",
     "format-icons": {
       "headphone": "",
@@ -194,5 +175,12 @@
       "balanced": "",
       "power-saver": ""
     }
+  },
+  "custom/recorder": {
+    "format": " ",
+    "return-type": "json",
+    "interval": 1,
+    "exec": "echo '{\"class\": \"recording\"}'",
+    "exec-if": "pgrep wf-recorder"
   }
 }

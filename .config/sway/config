@@ -8,10 +8,13 @@ input type:keyboard {
 input type:touchpad {
     natural_scroll true
     dwt true
+    tap enabled
 }
 
 exec --no-startup-id udiskie
 exec --no-startup-id dunst
+exec --no-startup-id syncthing serve
+exec --no-startup-id wlsunset -l 45.4 -L 9.6
 exec ~/bin/20-20-20.sh
 
 ### Variables
@@ -169,12 +172,24 @@ bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 #
 # Screenshots
 #
-# Screenshot of the focused output
-bindsym $mod+Print exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
-# Screenshot of the focused window
-bindsym $mod+Ctrl+Print exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')"
-# Screenshot of a region
-bindsym $mod+Shift+Print exec grim -g "$(slurp)"
+set $screenshot "screenshot: [w]indow, [r]egion, [f]ullscreen"
+mode $screenshot {
+    bindsym --to-code {
+        w exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')", mode "default"
+        r exec grim -g "$(slurp)", mode "default"
+        f exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name'), mode "default"
+
+        Escape mode "default"
+        $mod+Print mode "default"
+    }
+}
+bindsym --to-code $mod+Print mode $screenshot
+
+#
+# Screen recording
+#
+set $screenrecorder `$HOME/.config/sway/toggle-screen-recorder.sh`
+bindsym --to-code $mod+Shift+R exec $screenrecorder
 
 # Lock screen
 bindsym $mod+l exec swaylock -f
@@ -228,18 +243,17 @@ bindsym XF86Favorites exec swaymsg output eDP-1 power toggle
 
 font pango:Inter 1
 
-# Ayu theme
-set $accent #FF9940
-set $background #FAFAFA
-set $foreground #6C7680
-set $ui #959DA6
-set $error #F51818
-set $selection-bg #E5EBF2
+# Zenbones theme
+set $accent #3B8992
+set $background #F0EDEC
+set $foreground #2C363C
+set $error #A8334C
+set $selection-bg #3B8992
 
 # class                 border  bg      text    indicator child_border
-client.focused          $selection-bg $selection-bg $foreground $accent
+client.focused          $background $background $foreground $accent
 client.focused_inactive $background $background $foreground $accent
-client.unfocused        $background $background $foreground $accent
+client.unfocused        $foreground $foreground $background $accent
 client.urgent           $accent $accent $foreground $accent
 
 include /etc/sway/config.d/*

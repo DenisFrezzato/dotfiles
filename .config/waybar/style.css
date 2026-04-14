@@ -1,13 +1,14 @@
 * {
   font-weight: 400;
-  font-family: 'Inter 18pt tnum', 'Font Awesome 6 Free', sans-serif;
+  font-family: 'Inter 18pt tnum', 'FontAwesome',  sans-serif;
   font-size: 14px;
 }
 
 window#waybar {
-  background: #FAFAFA;
+  background: #1C1917;
   border: 0;
-  color: #6C7680;
+  color: #B4BDC3;
+  transition: unset;
 }
 
 button,
@@ -16,21 +17,22 @@ button:hover {
   box-shadow: none;
 }
 
-#workspaces button {
+#workspaces button,
+#workspaces button:hover {
+  background: transparent;
   border-radius: 0;
+  color: #B4BDC3;
   padding: 0 4;
   border-bottom: 2px solid transparent;
 }
 
 #workspaces button.focused {
-  background: #E5EBF2;
-  color: #FF9940;
+  color: #66A5AD;
   border-color: currentColor;
 }
 
 #workspaces button.urgent {
-  background: #FF9940;
-  color: #E5EBF2;
+  color: #DE6E7C;
   border-color: currentColor;
 }
 
@@ -47,10 +49,8 @@ button:hover {
 #custom-media,
 #clock,
 #tray,
-#idle_inhibitor,
-#custom-reboot,
-#custom-power,
-#mode {
+#mode,
+#custom-recorder {
   padding: 0 8;
 }
 
@@ -59,19 +59,12 @@ button:hover {
 }
 
 .warning {
-  color: #FA8D3E;
+  color: #B77E64;
 }
 
-.critical {
-  color: #F51818;
-}
-
-#custom-reboot:hover {
-  color: #FF9940;
-}
-
-#custom-power:hover {
-  color: #F51818;
+.critical,
+#custom-recorder {
+  color: #DE6E7C;
 }
 
 tooltip {

@@ -14,7 +14,6 @@ input type:touchpad {
 exec --no-startup-id udiskie
 exec --no-startup-id dunst
 exec --no-startup-id syncthing serve
-exec --no-startup-id wlsunset -l 45.4 -L 9.6
 exec ~/bin/20-20-20.sh
 
 ### Variables

@@ -6,15 +6,19 @@ input type:keyboard {
 }
 
 input type:touchpad {
-    natural_scroll true
-    dwt true
+    natural_scroll enabled
+    dwt enabled
     tap enabled
 }
 
-exec --no-startup-id udiskie
-exec --no-startup-id dunst
-exec --no-startup-id syncthing serve --no-browser
-exec --no-startup-id wlsunset -l 45.4 -L 9.6
+input type:pointer {
+    natural_scroll enabled
+}
+
+exec udiskie
+exec dunst
+exec syncthing serve --no-browser
+exec wlsunset -l 46 -L 12
 exec ~/bin/20-20-20.sh
 
 ### Variables
@@ -160,14 +164,16 @@ bindsym $mod+r mode "resize"
 #
 # Utilities:
 #
-# Special keys to adjust volume via PulseAudio
-bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
-bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
-bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
-bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+# Special keys to adjust volume via PipeWire
+bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 # Special keys to adjust brightness via brightnessctl
 bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
 bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+bindsym --locked shift+XF86MonBrightnessDown exec brightnessctl set 1%-
+bindsym --locked shift+XF86MonBrightnessUp exec brightnessctl set 1%+
 
 #
 # Screenshots
@@ -188,8 +194,7 @@ bindsym --to-code $mod+Print mode $screenshot
 #
 # Screen recording
 #
-set $screenrecorder `$HOME/.config/sway/toggle-screen-recorder.sh`
-bindsym --to-code $mod+Shift+R exec $screenrecorder
+bindsym --to-code $mod+Shift+r exec ~/.config/sway/toggle-screen-recorder.sh
 
 # Lock screen
 bindsym $mod+l exec swaylock -f
@@ -197,13 +202,13 @@ bindsym $mod+l exec swaylock -f
 #
 # Exit mode
 #
-set $exit "exit: [s]leep, [p]oweroff, [r]eboot, [l]ogout"
+set $exit "exit: [s]leep, [p]oweroff, [r]eboot, [e]xit"
 mode $exit {
     bindsym --to-code {
         s exec systemctl suspend, mode "default"
         p exec systemctl poweroff
         r exec systemctl reboot
-        l exec swaymsg exit
+        e exec swaymsg exit
 
         Escape mode "default"
         $mod+x mode "default"
@@ -221,7 +226,7 @@ mode $wifi {
         f exec nmcli radio wifi off, mode "default"
 
         Escape mode "default"
-        $mod+w mode "default"
+        $mod+Ctrl+w mode "default"
     }
 }
 bindsym --to-code $mod+Ctrl+w mode $wifi
@@ -241,7 +246,9 @@ bindsym Ctrl+Shift+space exec dunstctl close-all
 
 bindsym XF86Favorites exec swaymsg output eDP-1 power toggle
 
-font pango:Inter 1
+font pango:Inter 10
+default_border pixel 2
+default_floating_border pixel 2
 
 # Zenbones theme
 set $accent #3B8992

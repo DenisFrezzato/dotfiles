@@ -178,12 +178,16 @@ bindsym --locked shift+XF86MonBrightnessUp exec brightnessctl set 1%+
 #
 # Screenshots
 #
-set $screenshot "screenshot: [w]indow, [r]egion, [f]ullscreen"
+set $screenshot "screenshot: [w]indow, [r]egion, [f]ullscreen, [o]cr  (Shift = clipboard)"
 mode $screenshot {
     bindsym --to-code {
-        w exec grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')", mode "default"
-        r exec grim -g "$(slurp)", mode "default"
-        f exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name'), mode "default"
+        w       exec ~/.config/sway/screenshot.sh window,      mode "default"
+        Shift+w exec ~/.config/sway/screenshot.sh window copy, mode "default"
+        r       exec ~/.config/sway/screenshot.sh region,      mode "default"
+        Shift+r exec ~/.config/sway/screenshot.sh region copy, mode "default"
+        f       exec ~/.config/sway/screenshot.sh output,      mode "default"
+        Shift+f exec ~/.config/sway/screenshot.sh output copy, mode "default"
+        o exec g=$(slurp) && grim -s 2 -g "$g" - | tesseract - - -l eng+ita --psm 6 2>/dev/null | wl-copy && notify-send "OCR copied", mode "default"
 
         Escape mode "default"
         $mod+Print mode "default"

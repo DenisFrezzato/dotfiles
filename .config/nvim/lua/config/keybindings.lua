@@ -3,7 +3,7 @@ local opts = { noremap = true, silent = true }
 
 bind("n", "<leader>w", ":w<cr>", opts)
 bind("n", "<leader>q", ":q<cr>", opts)
-bind({ "n", "v" }, "<leader><cr>", ":noh<cr>", { silent = true }, opts)
+bind({ "n", "v" }, "<leader><cr>", ":noh<cr>", opts)
 bind({ "n", "v" }, "<leader>ss", "<cmd>setlocal spell!<cr>", opts)
 
 -- Clipboard functionality (paste from system).
@@ -19,8 +19,6 @@ bind("n", "<c-k>", "<cmd>m .-2<cr>==", opts)
 bind("v", "<leader>64e", "y:let @\"=system('base64 -w 0', @\")<cr>gvP", opts)
 bind("v", "<leader>64d", "y:let @\"=system('base64 -w 0 --decode', @\")<cr>gvP", opts)
 
-bind("n", "[d", vim.diagnostic.goto_prev, opts)
-bind("n", "]d", vim.diagnostic.goto_next, opts)
 bind("n", "<leader>k", vim.lsp.buf.signature_help, opts)
 
 bind("n", "gK", function()

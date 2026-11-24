@@ -1,7 +1,7 @@
 local bind = vim.keymap.set
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
 		"clone",
@@ -14,7 +14,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	"wbthomason/packer.nvim",
 	{
 		"zenbones-theme/zenbones.nvim",
 		dependencies = "rktjmp/lush.nvim",
@@ -27,10 +26,11 @@ require("lazy").setup({
 		end,
 	},
 
-	"ggandor/leap.nvim",
+	"https://codeberg.org/andyg/leap.nvim",
 
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
 		lazy = false,
 		build = ":TSUpdate",
 	},
@@ -39,46 +39,40 @@ require("lazy").setup({
 
 	{
 		"nvim-lualine/lualine.nvim",
-		dependencies = { "kyazdani42/nvim-web-devicons", lazy = true },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 
+	-- LSP
+	"neovim/nvim-lspconfig",
+	"williamboman/mason.nvim",
+	"williamboman/mason-lspconfig.nvim",
+
+	-- Autocompletion
 	"hrsh7th/nvim-cmp",
+	"hrsh7th/cmp-buffer",
+	"hrsh7th/cmp-path",
+	"saadparwaiz1/cmp_luasnip",
+	"hrsh7th/cmp-nvim-lsp",
 
+	-- Snippets
 	{
-		"VonHeikemen/lsp-zero.nvim",
-		branch = "v1.x",
-		dependencies = {
-			-- LSP Support
-			"neovim/nvim-lspconfig",
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
-
-			-- Autocompletion
-			"hrsh7th/nvim-cmp",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"saadparwaiz1/cmp_luasnip",
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-nvim-lua",
-
-			-- Snippets
-			"L3MON4D3/LuaSnip",
-			"rafamadriz/friendly-snippets",
-		},
+		"L3MON4D3/LuaSnip",
+		dependencies = { "rafamadriz/friendly-snippets" },
+		config = function()
+			require("luasnip.loaders.from_vscode").lazy_load()
+		end,
 	},
 
 	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"sharkdp/fd",
 			"nvim-treesitter/nvim-treesitter",
 		},
 	},
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	"nvim-telescope/telescope-ui-select.nvim",
 
-	"editorconfig/editorconfig-vim",
 	"tpope/vim-surround",
 	"lewis6991/gitsigns.nvim",
 	"tpope/vim-fugitive",
@@ -134,7 +128,7 @@ require("lazy").setup({
 
 	{
 		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
+		dependencies = { "copilotlsp-nvim/copilot-lsp" },
 		event = "InsertEnter",
 		config = function()
 			require("copilot").setup({
@@ -161,10 +155,10 @@ require("lazy").setup({
 			"nvim-treesitter/nvim-treesitter",
 			"hrsh7th/nvim-cmp",
 			"nvim-telescope/telescope.nvim",
-			{ "stevearc/dressing.nvim", opts = {} },
 		},
-		config = true,
+		rocks = { enabled = false },
 	},
+
 	{
 		"antosha417/nvim-lsp-file-operations",
 		dependencies = {
@@ -175,13 +169,27 @@ require("lazy").setup({
 			require("lsp-file-operations").setup()
 		end,
 	},
+
+	{
+		"johmsalas/text-case.nvim",
+		config = function()
+			require("textcase").setup({})
+		end,
+	},
+
+	{
+		"mistweaverco/kulala.nvim",
+		ft = { "http", "rest" },
+		opts = { global_keymaps = true },
+	},
 })
 
-require("nvim-treesitter.configs").setup({
-	highlight = { enable = true },
+-- nvim-treesitter `main` has no highlight module; start it per buffer.
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function()
+		pcall(vim.treesitter.start)
+	end,
 })
-
-vim.opt.background = "light"
 
 require("lualine").setup({
 	options = {
@@ -189,7 +197,8 @@ require("lualine").setup({
 	},
 })
 
-require("leap").set_default_mappings()
+bind({ "n", "x", "o" }, "s", "<Plug>(leap)")
+bind("n", "S", "<Plug>(leap-from-window)")
 
 require("gitsigns").setup({
 	on_attach = function(bufnr)
@@ -198,7 +207,7 @@ require("gitsigns").setup({
 		local function map(mode, l, r, opts)
 			opts = opts or {}
 			opts.buffer = bufnr
-			vim.keymap.set(mode, l, r, opts)
+			bind(mode, l, r, opts)
 		end
 
 		-- Navigation
@@ -285,23 +294,14 @@ bind("n", "<leader>fr", builtin.lsp_references)
 bind("n", "<leader>fc", builtin.command_history)
 
 require("mason").setup()
-require("mason-lspconfig").setup({
-	handlers = {
-		function(server_name)
-			require("lspconfig")[server_name].setup({})
-		end,
-	},
-})
+-- Must run before servers are enabled.
+vim.lsp.config("*", { capabilities = require("cmp_nvim_lsp").default_capabilities() })
+-- mason-lspconfig v2 calls vim.lsp.enable() for installed servers.
+require("mason-lspconfig").setup()
 
 -- Reserve a space in the gutter
 -- This will avoid an annoying layout shift in the screen
 vim.opt.signcolumn = "yes"
-
--- Add cmp_nvim_lsp capabilities settings to lspconfig
--- This should be executed before you configure any language server
-local lspconfig_defaults = require("lspconfig").util.default_config
-lspconfig_defaults.capabilities =
-	vim.tbl_deep_extend("force", lspconfig_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 -- This is where you enable features that only work
 -- if there is a language server active in the file
@@ -312,7 +312,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		bind("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
 		bind("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
-		bind("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
 		bind("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
 		bind({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
 	end,
@@ -320,6 +319,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.diagnostic.config({
 	float = { focusable = true },
+	-- Show the message after [d / ]d (old goto_prev/next did this by default).
+	jump = {
+		on_jump = function(_, bufnr)
+			vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor", focus = false })
+		end,
+	},
 })
 
 local cmp = require("cmp")
@@ -351,8 +356,6 @@ local treeapi = require("nvim-tree.api")
 bind("n", "<leader>e", function()
 	treeapi.tree.toggle({ find_file = true })
 end)
-
-require("lsp-file-operations").setup()
 
 require("formatter").setup({
 	filetype = {
@@ -389,21 +392,46 @@ require("lint").linters_by_ft = {
 }
 
 autocmd("BufWritePost", {
+	group = augroup("__lint__", { clear = true }),
 	callback = function()
 		require("lint").try_lint()
 	end,
 })
 
-bind(
-	"n",
-	"<leader>f",
-	"<cmd>mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F",
-	{ noremap = true, silent = true }
-)
+bind("n", "<leader>f", "mF:%!eslint_d --stdin --fix-to-stdout --stdin-filename %<CR>`F", { silent = true })
 
--- bind("n", "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
--- bind("v", "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
 bind("n", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
 bind("v", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
 bind("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
 vim.cmd([[cab cc CodeCompanion]])
+
+require("codecompanion").setup({
+	interactions = {
+		chat = { adapter = "gemini" },
+		inline = { adapter = "gemini" },
+		cmd = { adapter = "gemini" },
+	},
+	adapters = {
+		http = {
+			gemini = function()
+				return require("codecompanion.adapters").extend("gemini", {
+					env = { api_key = "cmd:cat $HOME/.gemini-api-key" },
+				})
+			end,
+		},
+		acp = {
+			gemini_cli = function()
+				return require("codecompanion.adapters").extend("gemini_cli", {
+					env = { GEMINI_API_KEY = "cmd:cat $HOME/.gemini-api-key" },
+				})
+			end,
+			claude_code = function()
+				return require("codecompanion.adapters").extend("claude_code", {
+					env = {
+						CLAUDE_CODE_OAUTH_TOKEN = "cmd:jq -r '.claudeAiOauth.accessToken' ~/.claude/.credentials.json",
+					},
+				})
+			end,
+		},
+	},
+})

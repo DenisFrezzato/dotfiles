@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DOTFILES=$(cd "$(dirname "$0")" && pwd)
+
 sudo pacman -S --needed git base-devel
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin && makepkg -si
@@ -65,4 +67,8 @@ systemctl enable --user pipewire.socket
 systemctl enable --user xdg-desktop-portal
 sudo reflector --latest 15 --sort rate --save /etc/pacman.d/mirrorlist
 
-cp -r .config .xkb symbols .zshrc ~
+# Symlink so edits in ~ land in the repo. Existing real dirs must be removed first.
+mkdir -p ~/.config
+for f in .config/* .xkb symbols .zshrc; do
+  ln -sfn "$DOTFILES/$f" ~/"$f"
+done

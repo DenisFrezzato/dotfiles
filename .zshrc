@@ -8,7 +8,6 @@ antigen bundle git
 antigen bundle sudo
 antigen bundle docker-compose
 antigen bundle colored-man-pages
-antigen bundle dotenv
 antigen bundle kubectl
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-history-substring-search
@@ -29,8 +28,8 @@ alias clamdscan="clamdscan --fdpass"
 
 alias tpq="telepresence quit -s"
 alias tpc="telepresence connect"
-alias tpctest="tpc --also-proxy 10.1.0.0/24,10.6.0.0/24"
-alias tpcprod="tpc --also-proxy 10.127.224.0/19"
+alias tpctest="tpc --also-proxy 10.1.0.0/24,10.6.0.0/24,10.126.192.0/20"
+alias tpcprod="tpc --also-proxy 10.127.224.0/19,10.127.192.0/20"
 
 export ANDROID_HOME="$HOME/Android/Sdk"
 # Output of `stack path --compiler-tools-bin`, hardcoded for performance.
@@ -46,5 +45,15 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=true
 # [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
 
 # fnm
-export PATH="$HOME/.fnm:$PATH"
-eval "`fnm env --use-on-cd`"
+FNM_PATH="/home/spira_mirabilis/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/spira_mirabilis/.local/share/fnm:$PATH"
+  eval "`fnm env --use-on-cd`"
+fi
+
+export GEMINI_API_KEY=$(cat $HOME/.gemini-api-key)
+export CONTEXT7_API_KEY=$(cat $HOME/.context7-api-key)
+export GITHUB_PAT=$(cat $HOME/.github-pat)
+
+# opencode
+export PATH=/home/spira_mirabilis/.opencode/bin:$PATH

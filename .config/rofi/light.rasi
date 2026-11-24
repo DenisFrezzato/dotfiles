@@ -2,20 +2,20 @@ configuration {
     display-run: " ";
     display-drun: "  ";
     display-window: "  ";
-    font: "JetBrains Mono 12";
+    font: "Iosevka 12";
     show-icons: true;
 }
 
 * {
-    accent: #FF9940;
-    background: #FAFAFA;
-    foreground: #6C7680;
+    accent: #3B8992;
+    foreground: #2C363C;
+    background: #F0EDEC;
     ui: #959DA6;
 
-    error: #F51818;
+    error: #A8334C;
 
     line: #F0F1F2;
-    selection-bg: #E5EBF2;
+    selection-bg: #CBD9E3;
 
     normal-background:           @background;
     normal-foreground:           @foreground;
@@ -101,9 +101,8 @@ mainbox {
 prompt {
     enabled: true;
     padding: 8 0 0 8;
-    font: "Font Awesome 5 Free Regular 12";
-    font: "Inconsolata-g";
-    font: "JetBrains Mono 12";
+    font: "FontAwesome 12";
+    font: "Iosevka 12";
     text-color: @normal-foreground;
 }
 

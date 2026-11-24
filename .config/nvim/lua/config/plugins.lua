@@ -407,24 +407,12 @@ vim.cmd([[cab cc CodeCompanion]])
 
 require("codecompanion").setup({
 	interactions = {
-		chat = { adapter = "gemini" },
-		inline = { adapter = "gemini" },
-		cmd = { adapter = "gemini" },
+		chat = { adapter = "claude_code" },
+		inline = { adapter = "claude_code" },
+		cmd = { adapter = "claude_code" },
 	},
 	adapters = {
-		http = {
-			gemini = function()
-				return require("codecompanion.adapters").extend("gemini", {
-					env = { api_key = "cmd:cat $HOME/.gemini-api-key" },
-				})
-			end,
-		},
 		acp = {
-			gemini_cli = function()
-				return require("codecompanion.adapters").extend("gemini_cli", {
-					env = { GEMINI_API_KEY = "cmd:cat $HOME/.gemini-api-key" },
-				})
-			end,
 			claude_code = function()
 				return require("codecompanion.adapters").extend("claude_code", {
 					env = {
